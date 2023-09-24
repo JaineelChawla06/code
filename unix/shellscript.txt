@@ -1,0 +1,76 @@
+echo "enter any number :"
+read num
+if[ `epxr $num % 2 ` -eq 0  ]
+then
+echo "number is even"
+else 
+echo "number is odd"
+fi
+============================================
+echo "enter any number"
+read num
+fact=1
+for (i=1;i<=num;i++)
+{
+	fact=$((fact*i))
+}
+echo "$fact"
+============================================
+echo "enter any number"
+read num
+reverse=0
+while[ num -gt 0 ]
+do
+remainder=$((num%10))
+reverse=$(($reverse*10+$remainder))
+num=$(($num/10))
+done
+echo "reversed number is $reverse"
+============================================
+echo "enter any number"
+read num
+reverse=0
+while [ num -gt 0 ]
+do
+remainder=$((num%10))
+reverse=$(($reverse*10+$remainder))
+num=$(($num/10))
+done
+echo "reversed number is $reverse"
+============================================
+echo "enter any number"
+read num
+reverse=0
+original=$number
+while [ $num -ne 0 ]
+do
+remainder=$((num%10))
+reverse=$(($reverse*10+$remainder))
+num=$(($num/10))
+done
+if[$original -eq $reverse]
+echo "$original is palindrome"
+else
+echo "$original is not palindrome"
+fi
+============================================
+echo "Enter a number: "
+read c
+x=$c
+sum=0
+r=0
+n=0
+while [ $x -gt 0 ]
+do
+r=expr $x % 10
+n=expr $r \* $r \* $r
+sum=expr $sum + $n
+x=expr $x / 10
+done
+if [ $sum -eq $c ]
+then
+echo "It is an Armstrong Number."
+else
+echo "It is not an Armstrong Number."
+fi
+============================================

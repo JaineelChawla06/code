@@ -1,0 +1,112 @@
+DEFAULT.ASPX
+
+Imports System.Data.SqlClient
+Partial Class _Default
+    Inherits System.Web.UI.Page
+    Dim cn As New SqlConnection
+    Dim cmd As New SqlCommand
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+    End Sub
+
+    Protected Sub Button1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Button1.Click
+        cn = New SqlConnection("Data Source=.\SQLEXPRESS;AttachDbFilename=F:\ASP\WebSite4\App_Data\Database.mdf;Integrated Security=True;User Instance=True")
+        cmd = New SqlCommand("insert into stud(id,name,email,password) values(" & sid.Text & ",'" & sname.Text & "','" & semail.Text & "','" & spassword.Text & "')", cn)
+        cn.Open()
+        cmd.ExecuteNonQuery()
+        cn.Close()
+        Response.Redirect("dis.aspx?msg=9090")
+    End Sub
+End Class
+
+
+UPDATE.ASPX
+
+Imports System.Data.SqlClient
+Partial Class update
+    Inherits System.Web.UI.Page
+    Dim cn As New SqlConnection
+    Dim cmd As New SqlCommand
+    Dim uid As Integer
+
+    Protected Sub Button1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Button1.Click
+        cn = New SqlConnection("Data Source=.\SQLEXPRESS;AttachDbFilename=F:\ASP\WebSite4\App_Data\Database.mdf;Integrated Security=True;User Instance=True")
+        uid = CInt(Request.QueryString(uid))
+        cmd = New SqlCommand("update stud set name='" & sname.Text & "',email='" & semail.Text & "',password='" & spassword.Text & "' where id= " & uid & " ", cn)
+
+        cn.Open()
+        cmd.ExecuteNonQuery()
+        cn.Close()
+        Response.Redirect("dis.aspx?msg=9090")
+    End Sub
+End Class
+
+
+DELETE.ASPX
+
+
+Imports System.Data.SqlClient
+Partial Class delete
+    Inherits System.Web.UI.Page
+    Dim cn As New SqlConnection
+    Dim cmd As New SqlCommand
+    Dim did As Integer
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        cn = New SqlConnection("Data Source=.\SQLEXPRESS;AttachDbFilename=F:\ASP\WebSite4\App_Data\Database.mdf;Integrated Security=True;User Instance=True")
+        did = CInt(Request.QueryString(did))
+        cmd = New SqlCommand("delete from stud where id=" & did & " ", cn)
+
+        cn.Open()
+        cmd.ExecuteNonQuery()
+        cn.Close()
+        Response.Redirect("dis.aspx?msg=9090")
+    End Sub
+End Class
+
+
+DISPLAY.ASPX
+
+<%@ Import Namespace="System.Data.Sqlclient" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="dis.aspx.vb" Inherits="dis" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    <%  Dim cn As New SqlConnection
+        Dim cmd As New SqlCommand
+        Dim dr As SqlDataReader
+        cn = New SqlConnection("Data Source=.\SQLEXPRESS;AttachDbFilename=F:\ASP\WebSite4\App_Data\Database.mdf;Integrated Security=True;User Instance=True")
+        cmd = New SqlCommand("select * from stud", cn)
+        cn.Open()
+        dr = cmd.ExecuteReader
+        %>
+        <table border="2px">
+        <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>E-MAIL</th>
+        <th>PASSWORD</th>
+        </tr>
+        <%  While dr.Read
+                Response.Write("<tr>")
+                Response.Write("<td>" & dr.GetValue(0) & "</td>")
+                Response.Write("<td>" & dr.GetString(1) & "</td>")
+                Response.Write("<td>" & dr.GetString(2) & "</td>")
+                Response.Write("<td>" & dr.GetString(3) & "</td>")
+                Response.Write("<td> <a href=delete.aspx?did=" & dr.GetValue(0) & ">DELETE </a></td>")
+                Response.Write("<td> <a href=update.aspx?uid=" & dr.GetValue(0) & ">UPDATE </a></td>")
+                Response.Write("</tr>")
+            End While%>
+        </table>
+    </div>
+    </form>
+</body>
+</html>
